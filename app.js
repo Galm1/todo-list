@@ -37,8 +37,10 @@ app.post('/', function (req, res) {
   let newItem = {'todoItem': newTodoItem, 'done':false, 'id': maxId + 1}
   //then i push newItem into mtData array
   myData.push(newItem);
+  // then redirect the page to the home.
   res.redirect('/')
 })
+
 
 app.post('/:id', function(req, res) {
   let id = parseInt(req.params.id);
