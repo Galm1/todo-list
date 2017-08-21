@@ -3,6 +3,7 @@ const mustacheExpress = require('mustache-express');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const app = express();
+const models = require('./models/models.js');
 
 app.engine('mustache', mustacheExpress());
 app.set('views', './views');
@@ -12,19 +13,19 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(expressValidator());
 
 //make an array for my todo items
-let myData = [
-  //when making the todoItems i give them an id of a number so i can work with each item later
-  {'todoItem':' give bailey a highfive!', 'done':false, 'id':1},
-  {'todoItem':' call mom', 'done':false, 'id':2},
-  {'todoItem':' gossip', 'done':false, 'id':3},
-  {'todoItem':' wash dishes', 'done':false, 'id':4},
-  {'todoItem':' turn myself into a pickle', 'done':false, 'id':5},
-  {'todoItem':' wake up morty', 'done':false, 'id':6}
-];
+// let myData = [
+//   //when making the todoItems i give them an id of a number so i can work with each item later
+//   {'todoItem':' give bailey a highfive!', 'done':false, 'id':1},
+//   {'todoItem':' call mom', 'done':false, 'id':2},
+//   {'todoItem':' gossip', 'done':false, 'id':3},
+//   {'todoItem':' wash dishes', 'done':false, 'id':4},
+//   {'todoItem':' turn myself into a pickle', 'done':false, 'id':5},
+//   {'todoItem':' wake up morty', 'done':false, 'id':6}
+// ];
 //getting the root ('/') page and returning a req and a res
 app.get('/', function (req, res) {
   //after getting the root page i then render my mustache page to it and assign 'mydata' to data. now i can use {{data}} in my mustache file that links with app.js
-res.render('todo.mustache', {data: myData})
+res.render('todo.mustache', {data:models.todos})
 });
 
 // i am now posting on my root ('/')
