@@ -7,6 +7,7 @@ const models = require('./models/models.js');
 const MongoClient = require('mongodb').MongoClient
   , assert = require('assert');
 const url = 'mongodb://localhost:27017/todo';
+const ObjectId = require('mongodb').ObjectID;
 
 app.engine('mustache', mustacheExpress());
 app.set('views', './views');
@@ -33,22 +34,24 @@ app.post('/', function (req, res) {
   collection.insertOne(newItem), function(err, result) {
     console.log("Found the following records");
     console.log(todoList);
-    res.render('todo.mustache', newItem);
+    res.render('todo.mustache', {data:todoList});
  }
    res.redirect('/');
 });
 
 
 app.post('/:id', function(req, res) {
-  let id = parseInt(req.params.id);
+  let id = req.params.id;
+  let collection = database.collection('todos');
+  collection.updateOne({_id: new ObjectId('id')}, {$set: {'done': true}}, function(err,result) {
+    collection.find({}).toArray(function(err, todos) {
+      res.render('todolist', {data:todoList});
+    });
+    res.redirect('/:id')
+  });
+console.log(collection);
+});
 
-  myData.forEach( function(listItem){
-  if(id === listItem.id){
-    listItem.done = true;
-  }
-})
-res.render('todo.mustache', {data: myData});
-})
 
 
 app.listen(3000, function () {
