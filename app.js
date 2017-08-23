@@ -22,19 +22,18 @@ app.get('/', function (req, res) {
   let collection = database.collection('todos');
   collection.find({}).toArray(function(err, todoList) {
     console.log("Found the following records");
-    console.log(todoList);
+    console.log('what are you',todoList);
     res.render('todo.mustache', {data:todoList});
   });
 });
 
 app.post('/', function (req, res) {
   const newTodoItem = req.body.newItem;
-  let newItem = {'todoItem': newTodoItem, 'done':false}
+  let newItem = {'todoItem': newTodoItem, 'done': false}
   let collection = database.collection('todos');
-  collection.insertOne(newItem), function(err, result) {
-    console.log("Found the following records");
-    console.log(todoList);
-    res.render('todo.mustache', {data:todoList});
+  collection.insertOne(newItem), function(err, todoList) {
+    console.log("Found the following records too");
+    // res.render('todo.mustache', {data:todoList});
  }
    res.redirect('/');
 });
@@ -43,11 +42,11 @@ app.post('/', function (req, res) {
 app.post('/:id', function(req, res) {
   let id = req.params.id;
   let collection = database.collection('todos');
-  collection.updateOne({_id: new ObjectId('id')}, {$set: {'done': true}}, function(err,result) {
+  collection.updateOne({_id: new ObjectId(id)}, {$set: {done: true}}, function(err,result) {
+    console.log('oh hell yeah');
     collection.find({}).toArray(function(err, todos) {
-      res.render('todolist', {data:todoList});
+      res.render('todo.mustache', {data:todoList});
     });
-    res.redirect('/:id')
   });
 console.log(collection);
 });
